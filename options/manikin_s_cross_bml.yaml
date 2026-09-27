@@ -1,0 +1,74 @@
+task: manikin_cross_bml
+model: manikin_s
+gpu_ids:
+- 0
+dist: false
+find_unused_parameters: true
+path:
+  root: results
+  pretrained_netG: null
+support_dir: support_data/
+body_model:
+  default_gender: male
+  smpl_path: support_data/
+datasets:
+  test:
+    dataloader_batch_size: 1
+    dataroot:
+    - ./datasets/BioMotionLab_NTroje/test
+    dataset_type: amass_swivel
+    heading_rotate_velocity: false
+    name: test_dataset
+    phase: test
+    test_batch: 1200
+    window_size: 40
+  train:
+    dataloader_batch_size: 256
+    dataloader_num_workers: 8
+    dataloader_shuffle: true
+    dataroot:
+    - ./datasets/MPI_HDM05/*
+    - ./datasets/CMU/*
+    dataset_type: amass_swivel
+    heading_rotate_velocity: false
+    name: train_dataset
+    phase: train
+    window_size: 40
+netG:
+  net_type: manikin_s
+  embed_dim: 256
+  input_dim: 54
+  nhead: 8
+  num_layer: 3
+  rotation_keep_joints:
+  - 1
+  - 2
+  - 3
+  - 6
+  - 9
+  - 12
+  - 13
+  - 14
+  - 16
+  - 17
+  init_type: kaiming_normal
+  init_bn_type: uniform
+  init_gain: 0.2
+train:
+  G_optimizer_lr: 0.0001
+  G_optimizer_reuse: false
+  G_param_strict: false
+  G_scheduler_gamma: 0.5
+  G_scheduler_milestones:
+  - 60000
+  - 100000
+  - 130000
+  - 160000
+  - 200000
+  - 250000
+  checkpoint_print: 100
+  checkpoint_save: 5000
+w_toe_pos: 0.3
+w_consistency: 5.0
+merge_bn: true
+merge_bn_startpoint: 400000

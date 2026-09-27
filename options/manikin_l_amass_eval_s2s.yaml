@@ -1,0 +1,58 @@
+task: eval_manikin_ln_mixed
+model: manikin_l
+gpu_ids:
+- 0
+data_parallel: false
+path:
+  root: results
+  pretrained_netG: null
+support_dir: ./support_data/
+datasets:
+  train:
+    name: train_dataset
+    dataset_type: amass_mixed
+    dataroot: ./datasets
+    dataloader_shuffle: true
+    dataloader_num_workers: 16
+    dataloader_batch_size: 32
+    window_size: 41
+    resume: false
+  test:
+    name: test_dataset
+    dataset_type: amass_mixed
+    dataroot: ./datasets
+    dataloader_batch_size: 1
+    window_size: 41
+netG:
+  net_type: ManikinL
+  nhead: 8
+  input_dim: 396
+  embed_dim: 1024
+  single_frame_feat_dim: 1024
+  joint_regressor_dim: 1024
+  joint_embed_dim: 256
+  fuse_windows: seq2seq
+  keep_joints:
+  - 1
+  - 2
+  - 3
+  - 6
+  - 9
+  - 12
+  - 13
+  - 14
+  - 16
+  - 17
+  w_swivel: 0.1
+  w_recon: 40
+  init_type: kaiming_normal
+  init_bn_type: uniform
+  init_gain: 0.2
+train:
+  G_optimizer_lr: 0.0001
+  G_scheduler_milestones:
+  - 120000
+  G_scheduler_gamma: 0.1
+  total_step: 200000
+  checkpoint_save: 10000
+  checkpoint_print: 50

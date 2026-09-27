@@ -1,0 +1,8 @@
+results/
+__pycache__/
+*.log
+support_data
+datasets/CMU/
+datasets/BioMotionLab_NTroje/
+datasets/MPI_HDM05/
+model_zoo/*.pth
